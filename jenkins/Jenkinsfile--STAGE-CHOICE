@@ -3,7 +3,7 @@ pipeline {
     parameters {
         choice(name: 'CLUSTER_NAME', choices: ['diamond', 'graphite'], description: 'The name of the cluster that needs to be taking traffic.')
         choice(name: 'VERSION', choices: ['4.0.0', '4.1.0', '5.0.0', '5.1.0'], description: 'Version of the artifact.')
-        choice(name: 'PROJECT', choices: ['gcp-ushi-carbon-sandbox-npe', 'gcp-ushi-carbon-predevsvcs-npe', 'gcp-ushi-carbon-svcs-dev', 'gcp-ushi-carbon-svcs-stage', 'gcp-ushi-carbon-svcs-prd'], description: ' The project in which the cluster needs to activated')
+        choice(name: 'PROJECT', choices: ['project-name', 'project-name', 'project-name', 'project-name'], description: ' The project in which the cluster needs to activated')
         extendedChoice description: 'Stage that needs to be (re)run', multiSelectDelimiter: ',', name: 'STAGE_CHOICE', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_CHECKBOX', value:'ALL,BOM Parsing and Variable Population,Workload restore,Cluster labels as Active,Spinnaker Attachment As Active and workload validation in parallel,Shift Traffic RAMP UP,Manual Judgement to enable GTM Traffic Switch,Allow GTM traffic to new Cluster,Shift Traffic RAMP DOWN,Manual Judgement to disable GTM Traffic Switch,Disable GTM traffic to Old Cluster,manual judgement reducing messaging workload to zero,reducing messaging workload to zero,Build release image', visibleItemCount: 14
     }
     stages {
