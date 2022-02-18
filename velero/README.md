@@ -1,5 +1,11 @@
 # note-commands
 
+# Process of creating backup (look at folder from-start)
+  * 1 Create a Docker Image and specify provider (in this case gcp)
+  * 2 Create a script to install velero on your cluster
+  * 3 Creating Backup location
+  * 4 Schedule Backup
+
 # Create a backup 
 velero backup create test-exlude-1 --include-namespaces vault --storage-location=carbon-app-cluster-backup --ttl=72h
 
