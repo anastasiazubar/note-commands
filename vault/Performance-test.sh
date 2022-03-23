@@ -48,3 +48,7 @@ sleep 35
 
 # Remove auth after test is complete
  vault auth disable userpass/
+
+# Remove all secrets after test 
+if [[ $ENVIRONMENT =  "K8S" ]]; then
+vault secrets disable secret2
