@@ -1,6 +1,8 @@
 # note-commands
 
 # Login to GCP via terminal
+gcloud auth application-default revoke
+gcloud auth application-default login
 gcloud auth login
 gcloud auth login --no-launch-browser
 gcloud config set project PROJECT_ID
