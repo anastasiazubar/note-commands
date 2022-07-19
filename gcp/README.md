@@ -7,6 +7,9 @@ gcloud auth login
 gcloud auth login --no-launch-browser
 gcloud config set project PROJECT_ID
 
+# Use SA instead your creds
+gcloud auth activate-service-account --key-file=file.json
+
 # Describe labelson cluster: 
 gcloud container clusters describe  cluster-name  --region us-east4 --format "value(resourceLabels)"
 
@@ -19,5 +22,3 @@ gcloud beta compute ssh --internal-ip username@node-name
 # Bucket backup 
 gsutil ls
 gsutil cp gs://project-name/terraform/state/bucket-name/default.tfstate gs://project-name/terraform/state/bucket-name/default.tfstate_backup
-
-
