@@ -9,3 +9,6 @@ tfswitch
 # If facing issue: Error inspecting states in the "gcs" backend: querying Cloud Storage failed: Get https://la-la-la connect host is down Run
  gcloud auth application-default login
  
+#Terraform plan output in readable format
+terraform plan -out tf.plan
+terraform show -no-color tf.plan > tfplan.txt
