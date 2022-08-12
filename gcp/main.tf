@@ -3,10 +3,15 @@ terraform {
   }
 }
 
+provider "google" {
+  credentials = file("myCredentials.json")
+  project = "gcp-study-340519"
+}
+
 resource "google_iap_brand" "project_brand" {
-  support_email     = ""
+  support_email     = "acc.gcp.forstudy@gmail.com"
   application_title = " Search Ads 360 API"
-  project           = ""
+  project           = "GCP-study"
 }
 
 resource "google_iap_client" "project_client" {
