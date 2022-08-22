@@ -1,3 +1,7 @@
+locals {
+  custom_responce_headers_policy = { for k, v in local.cdn_env_map : k => v.cdn.custom_responce_headers_policy if length(lookup(v.cdn, "custom_responce_headers_policy", {})) > 0 }
+}
+
 resource "aws_cloudfront_response_headers_policy" "custom_responce_headers_policy" {
   for_each = local.custom_responce_headers_policy
   name     = "${each.key}-custom_responce_headers_policy"
