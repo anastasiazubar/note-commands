@@ -22,3 +22,6 @@ gcloud beta compute ssh --internal-ip username@node-name
 # Bucket backup 
 gsutil ls
 gsutil cp gs://project-name/terraform/state/bucket-name/default.tfstate gs://project-name/terraform/state/bucket-name/default.tfstate_backup
+
+#Bucket list objects 
+gsutil ls -r gs://bucket_name
