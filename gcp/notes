@@ -26,7 +26,7 @@ gsutil cp gs://project-name/terraform/state/bucket-name/default.tfstate gs://pro
 #Bucket list objects 
 gsutil ls -r gs://bucket_name
 
-#Advanced-authentication -> after auth lo your profile
+# Advanced-authentication -> after auth lo your profile
 # https://cloud.google.com/container-registry/docs/advanced-authentication
 gcloud auth configure-docker
 
