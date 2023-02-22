@@ -25,3 +25,7 @@ gsutil cp gs://project-name/terraform/state/bucket-name/default.tfstate gs://pro
 
 #Bucket list objects 
 gsutil ls -r gs://bucket_name
+
+#
+gcloud auth configure-docker
+
