@@ -72,4 +72,16 @@ fi
 # 1. Prometheus UI Status -> Target -> Will be always UP
 # 2. To check and troubleshoout actual Endpoint -> navigate to BlackBox UI.
 # 3. To Create Alerts for Endpoints which using BlackBox use expression: probe_success ==  0
+#      Example: 
+      - alert: XXX-DEV-Application-Endpoint-Status
+        annotations:
+          description: “Application endpoint is down. Please investigate”
+          summary: “Application endpoint (instance {{ $labels.instance }}) is down. Please investigate)”
+        expr: probe_success{instance=~"https://specific_endpoint_to_check.*"} ==  0 # to check specific endpoint (when alerts devided by app teams)
+     #  expr: probe_success == 0 # to check ALL endpoints which are under BlckBox monitoring 
+        for: 5m
+        labels:
+          severity: critical
+          group: DSImonitoring 
+
 
