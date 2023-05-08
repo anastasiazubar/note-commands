@@ -31,12 +31,3 @@ def update_dns_record_patch(project_id, zone_name, record_name, record_type, rec
     response = zone.resource_record_set(record_name, record_type).patch(request_body)
 
     return response
-project_id = "my-gcp-project"
-zone_name = "example-com"
-record_name = "www.example.com"
-record_type = "A"
-record_ttl = 3600
-record_data = ["1.2.3.4", "5.6.7.8"]
-
-response = update_dns_record_patch(project_id, zone_name, record_name, record_type, record_ttl, record_data)
-print(response)
