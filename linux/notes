@@ -5,3 +5,6 @@ ln -s  ../../dev/onlineReimbursementReq/iam.tf iam.tf
 
 2. Unlink sym link
 unlink iam.tf  (from previous example)
+
+3. Check ssh connection to git though public key on VM
+ssh -i /etc/git-secret/ssh (-->key location) -o IdentityAgent=none -T git@github.com
