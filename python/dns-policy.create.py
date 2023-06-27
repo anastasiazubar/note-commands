@@ -1,16 +1,17 @@
 from google.cloud import dns
-from google.protobuf.duration_pb2 import Duration
 
 def create_dns_policy(project_id, policy_name, alternative_dns_servers):
-    client = dns.Client()
+    client = dns.Client(project=project_id)
 
-    # Prepare the DNS policy request
-    policy = client.policy(policy_name)
+    # Prepare the DNS zone request
+    zone = client.zone(policy_name)
+
+    # Create the DNS policy using the zone object
+    policy = zone.policy()
     policy.alternative_name_server_configs = alternative_dns_servers
 
     # Create the DNS policy
-    operation = policy.create()
-    operation.wait_for_completion(timeout=Duration(seconds=30))
+    policy.create()
 
     print(f"DNS policy '{policy_name}' created successfully.")
 
