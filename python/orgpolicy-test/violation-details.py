@@ -66,3 +66,27 @@ if violations:
         print(f"Type: {violation['type']}")
         print(f"Subject: {violation['subject']}")
         print(f"Description: {violation['description']}")
+
+
+
+#----------------
+
+
+    except GoogleAPIError as e:
+        # Handle Google API errors
+        errors = getattr(e, "errors", None)
+        if errors:
+            for error in errors:
+                print(f"Google API Error: {error}")  # Print the entire error response for inspection
+                # Handle the error or extract violation information if present
+                # Example: Extract violation details as before and append to violation_details list
+                # ...
+        else:
+            print(f"Google API Error: {e}")
+            # Handle other API errors if needed
+    except Exception as general_exception:
+        # Handle other general exceptions
+        print(f"General Exception: {general_exception}")
+        # Add additional error handling or logging here if needed
+
+    return violation_details  # Return the violation details
