@@ -70,3 +70,32 @@ for index, description_value in enumerate(description_matches, start=1):
 # Print context.error_message (optional)
 print(context.error_message)
 
+
+
+#--------------------------
+
+from google.api_core.exceptions import GoogleAPIError
+import json
+
+try:
+    # Your API call that might raise a GoogleAPIError
+    # For example:
+    # response = make_api_call()
+    # (where make_api_call() might raise a GoogleAPIError)
+
+    pass  # Placeholder for your API call
+
+except GoogleAPIError as err:
+    # Extract the error details
+    error_message = str(err)
+    error_details = err.error_details if hasattr(err, 'error_details') else None
+
+    # Accessing the description from the error_details
+    if error_details:
+        for detail in error_details:
+            if 'description' in detail:
+                description = detail['description']
+                print("Description:", description)
+
+    # Logging the error message and description
+    LOGGER.info(f"Exception happened with GoogleAPIError {error_message} ** message-> {description if 'description' in locals() else None}")
