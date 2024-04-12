@@ -7,20 +7,26 @@ endpoint_id = "your-endpoint-id"
 model_id = "your-model-id"
 
 # Initialize the AI Platform client
-aiplatform.init(project=project_id, location=location)
+client_options = {"api_endpoint": f"{location}-aiplatform.googleapis.com"}
+client = aiplatform.gapic.EndpointServiceClient(client_options=client_options)
 
-# Get the model resource
-model = aiplatform.Model(model_name=f"projects/{project_id}/locations/{location}/models/{model_id}")
+# Define the model name and endpoint name
+model_name = f"projects/{project_id}/locations/{location}/models/{model_id}"
+endpoint_name = f"projects/{project_id}/locations/{location}/endpoints/{endpoint_id}"
 
-# Get the endpoint resource
-endpoint = aiplatform.Endpoint(endpoint_name=f"projects/{project_id}/locations/{location}/endpoints/{endpoint_id}")
-
-# Deploy the model to the endpoint
-deployed_model = endpoint.deploy(
-    model=model,
-    deployed_model_display_name="your-deployed-model-name",
-    traffic_percentage=100,
+# Set the deployment request
+deploy_model_request = aiplatform.gapic.DeployModelRequest(
+    endpoint=endpoint_name,
+    deployed_model=aiplatform.gapic.DeployedModel(
+        id=model_id,
+        model=model_name,
+        display_name="your-deployed-model-name",
+        machine_type="n1-standard-4",
+    ),
 )
 
+# Deploy the model to the endpoint
+response = client.deploy_model(request=deploy_model_request)
+
 # Display deployment information
-print("Model deployed to endpoint with ID:", deployed_model.name)
+print("Model deployed to endpoint with ID:", response.deployed_model.id)
