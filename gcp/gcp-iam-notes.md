@@ -24,3 +24,13 @@ parent = string
 
 The project and location in which the Google Cloud Storage signed URL should be generated, specified in the format projects/*/locations/*.
 It takes the form projects/{project}/locations/{location}.
+
+3. Create VM 
+gcloud compute instances create vm-instance-name \
+  --project=your-project-id \
+  --zone=us-east4-a \
+  --machine-type=n1-standard-1 \
+  --image-family=debian-11 \
+  --image-project=debian-cloud \
+  --boot-disk-size=10GB \
+  --boot-disk-type=pd-balanced
