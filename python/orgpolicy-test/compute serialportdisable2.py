@@ -2,7 +2,7 @@ from google.cloud import compute_v1
 
 def disable_serial_port_access(project_id, zone, instance_name):
     """
-    Disables serial port access for a Google Compute Engine VM instance by updating metadata.
+    Disables serial port access for a Google Compute Engine instance by updating metadata.
 
     Args:
         project_id (str): Your Google Cloud project ID.
@@ -13,18 +13,23 @@ def disable_serial_port_access(project_id, zone, instance_name):
         # Initialize the Instances client
         instances_client = compute_v1.InstancesClient()
         
-        # Fetch the current instance metadata
+        # Get the current instance metadata
         instance = instances_client.get(project=project_id, zone=zone, instance=instance_name)
         metadata = instance.metadata
+
+        # Ensure metadata items are initialized
+        if metadata.items is None:
+            metadata.items = []
         
-        # Update metadata to disable serial port access
-        new_metadata_items = metadata.items or []
-        new_metadata_items.append(
-            compute_v1.Metadata.Items(key="serial-port-enable", value="0")
-        )
+        # Update or add the 'serial-port-enable' key to metadata
+        for item in metadata.items:
+            if item.key == "serial-port-enable":
+                item.value = "0"
+                break
+        else:
+            metadata.items.append(compute_v1.Metadata.Items(key="serial-port-enable", value="0"))
         
         # Set the updated metadata
-        metadata.items = new_metadata_items
         operation = instances_client.set_metadata(
             project=project_id,
             zone=zone,
@@ -32,7 +37,7 @@ def disable_serial_port_access(project_id, zone, instance_name):
             metadata=metadata
         )
         operation.result()  # Wait for the operation to complete
-        print(f"Serial port access successfully disabled for instance '{instance_name}'.")
+        print(f"Serial port access disabled successfully for instance '{instance_name}'.")
     
     except Exception as e:
         print(f"Error disabling serial port access: {e}")
