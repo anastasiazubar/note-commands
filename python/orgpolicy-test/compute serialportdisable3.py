@@ -10,32 +10,30 @@ project = 'your-project-id'
 zone = 'your-zone'
 instance = 'your-instance-name'
 
-# Define the metadata to update
-metadata = {
-    'items': [
-        {'key': 'your-metadata-key', 'value': 'your-new-metadata-value'}
-    ]
-}
-
-# Get the current metadata
+# Step 1: Get current metadata to retrieve the fingerprint
 instance_metadata = service.instances().get(
     project=project,
     zone=zone,
     instance=instance
 ).execute()
 
-# Add or modify the metadata
-instance_metadata['metadata']['items'].append({
-    'key': 'your-metadata-key',
-    'value': 'your-new-metadata-value'
-})
+# Extract the fingerprint from the current metadata
+fingerprint = instance_metadata['metadata']['fingerprint']
 
-# Update the metadata
+# Step 2: Define the new metadata
+metadata = {
+    'fingerprint': fingerprint,  # Include the fingerprint from the current metadata
+    'items': [
+        {'key': 'your-new-metadata-key', 'value': 'your-new-metadata-value'}
+    ]
+}
+
+# Step 3: Update the metadata
 request = service.instances().setMetadata(
     project=project,
     zone=zone,
     instance=instance,
-    body=instance_metadata['metadata']
+    body=metadata
 )
 
 # Execute the request
