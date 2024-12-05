@@ -1,41 +1,28 @@
-from google.cloud import compute_v1
+from google.auth import compute_engine
+from googleapiclient import discovery
 
-def enable_serial_port(project_id, zone, instance_name):
-    # Initialize the client
-    client = compute_v1.InstancesClient()
+# Initialize the Compute Engine API client
+credentials = compute_engine.Credentials()
+service = discovery.build('compute', 'v1', credentials=credentials)
 
-    # Get the current instance
-    instance = client.get(project=project_id, zone=zone, instance=instance_name)
-    
-    # Use the existing metadata object
-    metadata = instance.metadata
-    
-    # Add or overwrite the `serial-port-enable` key
-    metadata.items.append(
-        compute_v1.types.Metadata.Items(key="serial-port-enable", value="true")
-    )
+# Specify your project, zone, and instance
+project = 'your-project-id'
+zone = 'your-zone'
+instance = 'your-instance-name'
 
-    # Update the instance metadata
-    operation = client.set_metadata(
-        project=project_id,
-        zone=zone,
-        instance=instance_name,
-        metadata=metadata
-    )
+# Set the serial port to read from (default is 1, but can be adjusted)
+serial_port = 1
 
-    # Wait for the operation to complete
-    operation_client = compute_v1.ZoneOperationsClient()
-    result = operation_client.wait(project=project_id, zone=zone, operation=operation.name)
+# Get the serial port output
+request = service.instances().getSerialPortOutput(
+    project=project,
+    zone=zone,
+    instance=instance,
+    port=serial_port
+)
 
-    if result.error:
-        print(f"Failed to update metadata: {result.error}")
-    else:
-        print(f"Serial port enabled for instance: {instance_name}")
+# Execute the request
+response = request.execute()
 
-# Usage example
-project_id = "your-project-id"
-zone = "your-zone"  # e.g., "us-central1-a"
-instance_name = "your-instance-name"
-
-enable_serial_port(project_id, zone, instance_name)
-
+# Print the serial port output
+print(response.get('contents', 'No serial output available'))
