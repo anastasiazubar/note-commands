@@ -1,41 +1,41 @@
 from google.cloud import compute_v1
-from google.auth import compute_engine
 
-# Initialize the client and credentials
-client = compute_v1.InstancesClient(credentials=compute_engine.Credentials())
-project = 'YOUR_PROJECT_ID'
-zone = 'YOUR_ZONE'
-instance = 'YOUR_INSTANCE_NAME'
+def enable_serial_port(project_id, zone, instance_name):
+    # Initialize the client
+    client = compute_v1.InstancesClient()
 
-# 1. Enable Serial Port on the instance by adding metadata
-metadata = compute_v1.Metadata(
-    items=[{
-        'key': 'serial-port-enable',
-        'value': 'true'
-    }]
-)
+    # Get the current instance
+    instance = client.get(project=project_id, zone=zone, instance=instance_name)
+    
+    # Use the existing metadata object
+    metadata = instance.metadata
+    
+    # Add or overwrite the `serial-port-enable` key
+    metadata.items.append(
+        compute_v1.types.Metadata.Items(key="serial-port-enable", value="true")
+    )
 
-# Add metadata to enable serial port access
-operation = client.set_metadata(
-    project=project,
-    zone=zone,
-    instance=instance,
-    metadata=metadata
-)
+    # Update the instance metadata
+    operation = client.set_metadata(
+        project=project_id,
+        zone=zone,
+        instance=instance_name,
+        metadata=metadata
+    )
 
-# Wait for the operation to complete
-operation.result()  # This will block until the operation completes
+    # Wait for the operation to complete
+    operation_client = compute_v1.ZoneOperationsClient()
+    result = operation_client.wait(project=project_id, zone=zone, operation=operation.name)
 
-print(f"Serial port access enabled for {instance}.")
+    if result.error:
+        print(f"Failed to update metadata: {result.error}")
+    else:
+        print(f"Serial port enabled for instance: {instance_name}")
 
-# 2. Fetch serial port output from port 1 (default port)
-serial_output = client.get_serial_port_output(
-    project=project,
-    zone=zone,
-    instance=instance,
-    port=1  # Default port for serial output
-)
+# Usage example
+project_id = "your-project-id"
+zone = "your-zone"  # e.g., "us-central1-a"
+instance_name = "your-instance-name"
 
-# Print the serial port output (usually boot logs)
-print("Serial Port Output:")
-print(serial_output.contents)
+enable_serial_port(project_id, zone, instance_name)
+
