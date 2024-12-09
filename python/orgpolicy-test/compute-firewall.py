@@ -1,13 +1,12 @@
 from google.cloud import compute_v1
 
-def add_firewall_policy_association(project_id, firewall_policy_id, region, target, association_name):
+def add_firewall_policy_association_no_wait(project_id, firewall_policy_id, target, association_name):
     """
-    Add an association to a compute firewall policy in GCP.
+    Add an association to a compute firewall policy in GCP without waiting for operation to complete.
 
     Args:
         project_id: GCP project ID.
         firewall_policy_id: The ID of the firewall policy to which you want to add an association.
-        region: The region of the target resource.
         target: The target (e.g., network) for the association.
         association_name: The name for the association.
     """
@@ -20,27 +19,20 @@ def add_firewall_policy_association(project_id, firewall_policy_id, region, targ
     )
 
     # Add the association to the firewall policy
-    operation = client.add_association(
+    response = client.add_association(
         firewall_policy=firewall_policy_id,
         firewall_policy_association_resource=association,
-        region=region,
         project=project_id
     )
 
-    # Wait for the operation to complete
-    print("Adding association to the firewall policy...")
-    operation_client = compute_v1.GlobalOperationsClient()
-    operation = operation_client.wait(project=project_id, operation=operation.name)
-    if operation.status == compute_v1.Operation.Status.DONE:
-        print("Association added successfully!")
-    else:
-        print("Failed to add the association.")
+    # The response contains the operation metadata
+    print("Association request submitted. Operation details:")
+    print(response)
 
 # Example usage
 project_id = "your-project-id"
 firewall_policy_id = "your-firewall-policy-id"
-region = "your-region"
-target = "target-network-or-resource"
+target = "https://www.googleapis.com/compute/v1/projects/your-project-id/global/networks/your-network-name"
 association_name = "example-association"
 
-add_firewall_policy_association(project_id, firewall_policy_id, region, target, association_name)
+add_firewall_policy_association_no_wait(project_id, firewall_policy_id, target, association_name)
