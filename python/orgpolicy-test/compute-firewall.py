@@ -68,3 +68,30 @@ response = request.execute()
 
 # Print the response to see the result
 print(response)
+
+
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+
+# Set up credentials
+credentials = service_account.Credentials.from_service_account_file(
+    'path/to/your/service-account-file.json'
+)
+
+# Initialize the Compute Engine API client
+compute = build('compute', 'v1', credentials=credentials)
+
+# Define the project and region (optional, use global for global networks)
+project = 'your-project-id'
+
+# List the networks
+request = compute.networks().list(project=project)
+response = request.execute()
+
+# Display the networks
+if 'items' in response:
+    for network in response['items']:
+        print(f"Network Name: {network['name']}, Subnet Mode: {network['subnetMode']}")
+else:
+    print("No networks found.")
+
