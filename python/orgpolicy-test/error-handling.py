@@ -1,8 +1,9 @@
-    except Exception as err:
-        # Catch and handle "IAM_PERMISSION_DENIED"
-        if "IAM_PERMISSION_DENIED" in str(err):
-            LOGGER.info(f"IAM_PERMISSION_DENIED occurred: {err}")
-            context.response = "IAM_PERMISSION_DENIED: " + str(err).split("\n", 1)[0]
-        else:
-            # Re-raise unexpected exceptions
-            raise err
+try:
+    # Parse the JSON content
+    error_details = json.loads(response_content)
+    
+    # Extract the message field
+    error_message = error_details.get("error", {}).get("message", "No error message found")
+    
+    # Raise exception with the specific message
+    raise Exception(f"Exception happened: {error_message}")
