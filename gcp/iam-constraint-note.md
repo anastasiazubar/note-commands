@@ -34,3 +34,20 @@ Which One Should You Use?
 For stronger security and to enforce IAM best practices, use iam.disableServiceAccountKeyCreation to ensure no one creates potentially unsafe service account keys.
 If you need a more flexible approach, where only Google-managed service accounts are restricted but developers can still generate keys for user-managed service accounts, use iam.managed.disableServiceAccountKeyCreation.
 Would you like help setting up these constraints in GCP? 🚀
+
+
+
+
+
+
+
+
+
+
+iam.managed.preventPrivilegedBasicRolesForDefaultServiceAccounts
+
+To prevent default service accounts from being granted the Editor or Owner roles, use the iam.managed.preventPrivilegedBasicRolesForDefaultServiceAccounts managed constraint. This constraint prevents default service accounts from ever being granted the Editor or Owner roles, either automatically or manually.
+
+https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts
+
+Note: This constraint prevents default service accounts from being automatically granted the Editor role (roles/editor). However, it doesn't prevent default service accounts from being granted the Editor or Owner roles later. To disable the automatic Editor role grant and prevent the Editor and Owner roles from being granted to default service accounts in the future, use the iam.managed.preventPrivilegedBasicRolesForDefaultServiceAccounts managed constraint.
