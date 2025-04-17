@@ -81,3 +81,30 @@ operation = compute.instances().setMetadata(
 
 print(f"Set serial-port-enable=TRUE — operation: {operation['name']}")
 
+
+
+
+
+
+from googleapiclient import discovery
+from google.auth import default
+
+project = 'your-project-id'
+zone = 'us-central1-a'
+instance_name = 'your-instance-name'
+
+# Auth and client
+credentials, _ = default()
+compute = discovery.build('compute', 'v1', credentials=credentials)
+
+# Get instance metadata
+instance = compute.instances().get(project=project, zone=zone, instance=instance_name).execute()
+metadata_items = instance.get('metadata', {}).get('items', [])
+
+# Look for the serial-port-enable key
+value = next((item['value'] for item in metadata_items if item['key'] == 'serial-port-enable'), None)
+
+if value:
+    print(f"serial-port-enable: {value}")
+else:
+    print("serial-port-enable not set.")
