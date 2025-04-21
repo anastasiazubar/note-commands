@@ -23,3 +23,23 @@ operation = compute.instances().setMachineResources(
 ).execute()
 
 print(f"Nested virtualization enabled. Operation ID: {operation['name']}")
+
+
+
+
+
+
+
+
+instance_info = compute.instances().get(
+    project=project,
+    zone=zone,
+    instance=instance
+).execute()
+
+nested_virtualization = (
+    instance_info.get('advancedMachineFeatures', {})
+    .get('enableNestedVirtualization', False)
+)
+
+print(f"Nested Virtualization Enabled: {nested_virtualization}")
