@@ -38,3 +38,32 @@ operation = compute.instances().insert(
 ).execute()
 
 print(f"Created VM with IP forwarding enabled. Operation ID: {operation['name']}")
+
+
+
+
+
+region = 'us-east4'  # or the region where your subnet exists
+subnet_name = 'your-subnet-name'
+subnet_link = f"projects/{project}/regions/{region}/subnetworks/{subnet_name}"
+
+config = {
+    "name": instance_name,
+    "machineType": machine_type,
+    "canIpForward": True,
+    "disks": [{
+        "boot": True,
+        "autoDelete": True,
+        "initializeParams": {
+            "sourceImage": source_image
+        }
+    }],
+    "networkInterfaces": [{
+        "network": f"projects/{project}/global/networks/{network_name}",
+        "subnetwork": subnet_link,  # ✅ required for custom VPCs
+        "accessConfigs": [{
+            "type": "ONE_TO_ONE_NAT",
+            "name": "External NAT"
+        }]
+    }]
+}
