@@ -67,8 +67,7 @@ config = {
         }]
     }]
 }
+It’s true that we have multiple projects like this, where the ID does not match the name. However, none of these projects will run GKE. Only designated and newly created projects—where the ID matches the name—will run GKE.
+Since all new projects will be created with matching IDs and names, there is no need for us to change the code, as it will not be reused.
 
-
-This constraint is programmatically untestable. I can update metadata on the VM, so Case 58954538 was opened with GCP Support.
-Based on their comments, it is possible to update the metadata, but it cannot be used. They verified this by logging into the VM and confirmed that the constraint error is shown.
-I can't log in to the VM using an API call, so the error couldn't be caught, and regression testing cannot be performed in this case.
+The VA team is the only exception, as they have to test GKE in an already existing project.
