@@ -1,0 +1,4 @@
+condition:
+        title: "ScopedSecretAccess"
+        description: "Limit access to specific secret prefix"
+        expression: resource.name.startsWith()
