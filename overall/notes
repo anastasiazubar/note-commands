@@ -1,2 +1,7 @@
 # note-commands
 Cheet-sheet commands will be displayed under each related topic
+You’re right — the API is currently listed in the deny list. Could you please review the ticket, which was created on 10/26/2022, and confirm whether this deny rule still needs to be enforced?
+
+Additionally, please update the whitelist to reflect the current state, as several new service accounts and teams have been added since then.
+
+Thank you!
