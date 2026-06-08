@@ -1,4 +1,28 @@
 Audit Tool with TEALAS
+
+
+# Audit Tool
+
+## Purpose
+
+The Audit Tool provides an automated framework for validating IAM, access management, and security controls across GCP environments.
+
+The framework is designed to perform configurable compliance, governance, and security checks, identify policy violations, and generate alerts for remediation.
+
+The solution is extensible and allows new audit controls to be added as requirements evolve.
+
+## Current Scope
+
+The initial implementation focuses on validating controls associated with the TEALAS Just-In-Time (JIT) access model, including:
+
+* Read-Only Group Permission Validation
+* TEALAS Access Expiration Validation
+* Privileged Group Binding Validation
+* Activation Group Consistency Validation
+
+Additional audit controls may be incorporated in future releases to support broader IAM and security governance requirements.
+
+
 Purpose
 
 The Audit Tool with TEALAS provides automated validation of the GCP Just-In-Time (JIT) privileged access model. The tool continuously verifies that privileged access is configured and managed according to the approved TEALAS architecture.
